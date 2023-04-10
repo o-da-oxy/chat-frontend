@@ -1,0 +1,14 @@
+body {
+    overflow-x: hidden;
+}
+
+.home_bg {
+    background-image: url('../assets/chat_icon.png');
+    height: 450px;
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.welcome_page {
+}

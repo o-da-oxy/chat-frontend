@@ -1,0 +1,21 @@
+.signup-avatar_container {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.signup-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 2px solid gray;
+    object-fit: cover;
+}
+
+.image-upload-label {
+    position: absolute;
+    bottom: 0;
+    cursor: pointer;
+    color: blue;
+}
