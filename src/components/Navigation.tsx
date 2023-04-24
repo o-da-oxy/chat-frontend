@@ -1,9 +1,21 @@
 import React from 'react';
-import { Container, Nav, Navbar } from 'react-bootstrap';
+import { Button, Container, Nav, Navbar, NavDropdown } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import logo from '../assets/chat_icon.png';
+import { useSelector } from 'react-redux';
+import { useLogoutUserMutation } from '../redux/appApi';
 
 function Navigation() {
+  const user = useSelector((state: any) => state.user);
+
+  const [logoutUser] = useLogoutUserMutation();
+  async function handleLogout(event: React.FormEvent<HTMLButtonElement>) {
+    event.preventDefault();
+    await logoutUser(user);
+    // redirect to home page
+    window.location.replace('/');
+  }
+
   return (
     <Navbar bg="light" expand="lg">
       <Container>
@@ -15,20 +27,52 @@ function Navigation() {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
-            <LinkContainer to="/">
-              <Nav.Link>Home</Nav.Link>
-            </LinkContainer>
-            <LinkContainer to="/chat">
-              <Nav.Link>Chat</Nav.Link>
-            </LinkContainer>
+            {user && (
+              <LinkContainer to="/chat">
+                <Nav.Link>Chat</Nav.Link>
+              </LinkContainer>
+            )}
           </Nav>
           <Nav className="ms-auto">
-            <LinkContainer to="/login">
-              <Nav.Link>Log in</Nav.Link>
-            </LinkContainer>
-            <LinkContainer to="/signup">
-              <Nav.Link>Sign up</Nav.Link>
-            </LinkContainer>
+            {!user && (
+              <>
+                <LinkContainer to="/login">
+                  <Nav.Link>Log in</Nav.Link>
+                </LinkContainer>
+                <LinkContainer to="/signup">
+                  <Nav.Link>Sign up</Nav.Link>
+                </LinkContainer>
+              </>
+            )}
+            {user && (
+              <NavDropdown
+                style={{ position: 'relative' }}
+                title={
+                  <>
+                    <img
+                      src={user.picture}
+                      style={{
+                        width: 30,
+                        height: 30,
+                        marginRight: 10,
+                        objectFit: 'cover',
+                        borderRadius: '50%',
+                      }}
+                    />
+                    {user.name}
+                  </>
+                }
+                id="basic-nav-dropdown"
+              >
+                <NavDropdown.Item href="#action/3.1">Action1</NavDropdown.Item>
+                <NavDropdown.Item href="#action/3.2">Action2</NavDropdown.Item>
+                <NavDropdown.Item>
+                  <Button variant="danger" onClick={handleLogout}>
+                    Logout
+                  </Button>
+                </NavDropdown.Item>
+              </NavDropdown>
+            )}
           </Nav>
         </Navbar.Collapse>
       </Container>

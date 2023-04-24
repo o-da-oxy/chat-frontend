@@ -2,8 +2,11 @@ import React from 'react';
 import { Button, Col, Row } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import '../styles/Home.css';
+import { useSelector } from 'react-redux';
 
 function Home() {
+  const user = useSelector((state: any) => state.user);
+
   return (
     <Row>
       <Col
@@ -13,11 +16,20 @@ function Home() {
         <div className="welcome_page">
           <h1>Chat App</h1>
           <p>Make friends and improve your English!</p>
-          <LinkContainer to="/chat">
-            <Button>
-              Get Started! <i className="" />
-            </Button>
-          </LinkContainer>
+          {user && (
+            <LinkContainer to="/chat">
+              <Button>
+                Get Started! <i className="" />
+              </Button>
+            </LinkContainer>
+          )}
+          {!user && (
+            <LinkContainer to="/login">
+              <Button>
+                Get Started! <i className="" />
+              </Button>
+            </LinkContainer>
+          )}
         </div>
       </Col>
       <Col md={6} className="home_bg" />

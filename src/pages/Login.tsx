@@ -1,14 +1,35 @@
-import React, { useState } from 'react';
-import { Button, Container, Form } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import React, { useContext, useState } from 'react';
+import { Button, Container, Form, Spinner } from 'react-bootstrap';
+import { Link, useNavigate } from 'react-router-dom';
+import { useLoginUserMutation } from '../redux/appApi';
+import { AppContext } from '../redux/appContext';
 
 function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  // rtk query
+  const [loginUser, { isLoading, error }] = useLoginUserMutation();
+  // navigation
+  const navigate = useNavigate();
+  // socket.io
+  const { socket } = useContext(AppContext);
 
   async function handleLogin(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    // login logic
+    loginUser({ email, password }).then((res: any) => {
+      try {
+        if (res.data) {
+          // socket
+          socket.emit('new-user');
+          // navigation
+          navigate('/chat');
+        } else if (res.error) {
+          return alert('Wrong login or password! Please, try again');
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    });
   }
 
   return (
@@ -38,7 +59,9 @@ function Login() {
             required
           />
         </Form.Group>
-        <Button>Log in</Button>
+        <Button variant="primary" type="submit">
+          {isLoading ? <Spinner animation="grow" /> : 'Log in'}
+        </Button>
         <div className="py-4">
           <p className="text-center">
             Don't have an account? <Link to="/signup">Create an account</Link>

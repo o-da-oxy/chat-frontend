@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Container, Form } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useSignupUserMutation } from '../redux/appApi';
 import defaultAvatar from '../assets/flower_avatar.png';
 import '../styles/Signup.css';
 
@@ -13,6 +14,10 @@ function Signup() {
   const [image, setImage] = useState(null); // validateImage(), uploadImage()
   const [uploadingImg, setUploadingImg] = useState(false);
   const [imagePreview, setImagePreview] = useState(null); // картинка при регистрации
+  // rtk query
+  const [signupUser, { isLoading, error }] = useSignupUserMutation();
+  // navigation after signing up
+  const navigate = useNavigate();
 
   function validateImage(event: any) {
     // валидирует только размер
@@ -28,8 +33,9 @@ function Signup() {
   async function uploadImage(image: string) {
     // загрузка картинки в хранилище cloudinary
     const data = new FormData(); // key - value
-    const uploadPreset: string = process.env.REACT_APP_UPLOAD_PRESET!;
-    const cloudinaryUrl: string = process.env.REACT_APP_CLOUDINARY_FETCH!;
+    const uploadPreset = 'd59pcjpj';
+    const cloudinaryUrl =
+      'https://api.cloudinary.com/v1_1/dteevaoxv/image/upload';
     data.append('file', image);
     data.append('upload_preset', uploadPreset);
     try {
@@ -48,12 +54,22 @@ function Signup() {
     }
   }
 
-  // eslint-disable-next-line consistent-return
   async function handleSignup(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (!image) return alert('Wrong format! Please, upload an image');
     const url = await uploadImage(image);
-    // signup logic
+    signupUser({ picture: url, name, email, password }).then((res: any) => {
+      try {
+        if (res.data) {
+          navigate('/chat');
+          console.log(res.data);
+        } else if (res.error) {
+          console.log(res.error);
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    });
   }
 
   // id="image-upload" - чтобы открывался проводник
@@ -81,7 +97,7 @@ function Signup() {
         <Form.Group className="mb-3" controlId="formBasicName">
           <Form.Label>Name</Form.Label>
           <Form.Control
-            type="email"
+            type="name"
             placeholder="Enter name"
             onChange={(event) => setName(event.target.value)}
             value={name}
@@ -105,7 +121,7 @@ function Signup() {
             value={password}
           />
         </Form.Group>
-        <Button type="submit">
+        <Button variant="primary" type="submit">
           {uploadingImg ? 'Signing you up...' : 'Sign up'}
         </Button>
         <div className="py-3">

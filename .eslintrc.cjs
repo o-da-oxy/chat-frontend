@@ -33,5 +33,10 @@ module.exports = {
     'jsx-a11y/label-has-associated-control': 0,
     'consistent-return': 0,
     '@typescript-eslint/no-shadow': 0,
+    'no-param-reassign': 0,
+    'operator-assignment': 0,
+    'import/no-named-as-default': 0,
+    'import/order': 0,
+    'react/jsx-no-constructed-context-values': 0,
   },
 };
