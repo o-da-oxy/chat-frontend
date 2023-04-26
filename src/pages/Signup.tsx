@@ -20,19 +20,17 @@ function Signup() {
   const navigate = useNavigate();
 
   function validateImage(event: any) {
-    // валидирует только размер
-    const file = event.target.files[0]; // загруженный файл картинки
+    const file = event.target.files[0];
     if (file.size >= 1048576) {
       return alert('Max image size is 1mb');
     }
     setImage(file);
     const preview: React.SetStateAction<any> = URL.createObjectURL(file);
-    setImagePreview(preview); // ставим на превью
+    setImagePreview(preview);
   }
 
   async function uploadImage(image: string) {
-    // загрузка картинки в хранилище cloudinary
-    const data = new FormData(); // key - value
+    const data = new FormData();
     const uploadPreset = 'd59pcjpj';
     const cloudinaryUrl =
       'https://api.cloudinary.com/v1_1/dteevaoxv/image/upload';
@@ -46,7 +44,7 @@ function Signup() {
       });
       const urlData = await res.json();
       setUploadingImg(false);
-      console.log(urlData.url); // по этой ссылке лежит картинка в cloudinary
+      console.log(urlData.url);
       return urlData.url;
     } catch (error) {
       setUploadingImg(false);
@@ -72,8 +70,6 @@ function Signup() {
     });
   }
 
-  // id="image-upload" - чтобы открывался проводник
-  // accept="image/*" - в проводнике только картинки
   return (
     <Container>
       <Form

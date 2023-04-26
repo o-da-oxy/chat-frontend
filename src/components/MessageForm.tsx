@@ -1,15 +1,21 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Button, Col, Form, FormGroup, Row } from 'react-bootstrap';
 import '../styles/MessageForm.css';
 import { useSelector } from 'react-redux';
 import { AppContext } from '../redux/appContext';
 
 function MessageForm() {
+  const { socket, currentRoom, setMessages, messages } = useContext(AppContext);
   const user = useSelector((state: any) => state.user);
   const [message, setMessage] = useState('');
 
-  const { socket, currentRoom, setMessages, messages, privateMemberMsg } =
-    useContext(AppContext);
+  const messageEndRef = useRef<HTMLDivElement | null>(null);
+  function scrollToBottom() {
+    messageEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
 
   function getFormattedDate() {
     const date = new Date();
@@ -27,6 +33,7 @@ function MessageForm() {
   const todayDate = getFormattedDate();
 
   socket.off('room-messages').on('room-messages', (roomMessages: any) => {
+    console.log('room-messages', roomMessages);
     setMessages(roomMessages);
   });
 
@@ -44,7 +51,68 @@ function MessageForm() {
 
   return (
     <>
-      <div className="messages-output" />
+      <div className="messages-output">
+        {user &&
+          messages!.map(({ date, messagesByDate }, idx) => (
+            <div key={idx}>
+              <p className="alert alert-secondary text-center message-date-indicator">
+                {date}
+              </p>
+              {messagesByDate?.map(({ content, time, author }, msgIdx) => (
+                <div
+                  className={
+                    author.email === user?.email
+                      ? 'message'
+                      : 'incoming-message'
+                  }
+                  key={msgIdx}
+                >
+                  <div className="message-inner">
+                    <div className="d-flex align-items-center mb-1">
+                      <img
+                        src={
+                          author.id === user?.id ? user.picture : author.picture
+                        }
+                        style={{
+                          width: 30,
+                          height: 30,
+                          objectFit: 'cover',
+                          borderRadius: '50%',
+                          marginRight: 10,
+                        }}
+                      />
+                      <p
+                        className="message-sender"
+                        style={{
+                          color: '#0d6efd',
+                          fontWeight: 'bold',
+                          margin: '0',
+                          paddingRight: '10px',
+                        }}
+                      >
+                        {author.id === user?.id ? 'You' : author.name}
+                      </p>
+                      <p
+                        className="message-sender"
+                        style={{
+                          color: '#818c99',
+                          margin: '0',
+                        }}
+                      >
+                        {time}
+                      </p>
+                    </div>
+                    <p className="message-content" style={{ marginLeft: 40 }}>
+                      {content}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ))}
+        <div ref={messageEndRef} />
+      </div>
+
       {!user && (
         <div
           className="alert alert-danger"
@@ -53,6 +121,7 @@ function MessageForm() {
           Please login
         </div>
       )}
+
       {user && (
         <Form onSubmit={handleSubmit}>
           <Row>

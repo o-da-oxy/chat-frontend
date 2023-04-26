@@ -7,14 +7,16 @@ import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Chat from './pages/Chat';
 import { AppContext, socket } from './redux/appContext';
+import { IMessage, IUser } from './models/models';
 
 function App() {
-  const [rooms, setRooms] = useState([]);
-  const [currentRoom, setCurrentRoom] = useState([]);
-  const [members, setMembers] = useState([]);
-  const [messages, setMessages] = useState([]);
-  const [privateMemberMsg, setPrivateMemberMsg] = useState({});
-  const [newMessages, setNewMessages] = useState({});
+  const [rooms, setRooms] = useState<string[]>([]);
+  const [currentRoom, setCurrentRoom] = useState<string>('');
+  const [members, setMembers] = useState<IUser[]>([]);
+  const [messages, setMessages] = useState<IMessage[]>([]);
+  const [privateMemberMsg, setPrivateMemberMsg] = useState<
+    IMessage | null | undefined
+  >();
   return (
     <AppContext.Provider
       value={{
@@ -25,12 +27,10 @@ function App() {
         setMembers,
         messages,
         setMessages,
-        privateMemberMsg,
-        setPrivateMemberMsg,
         rooms,
         setRooms,
-        newMessages,
-        setNewMessages,
+        privateMemberMsg,
+        setPrivateMemberMsg,
       }}
     >
       <div className="App">
