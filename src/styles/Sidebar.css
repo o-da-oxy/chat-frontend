@@ -26,3 +26,13 @@
     bottom: 0;
     left: 12px;
 }
+
+.rooms-list-group-container {
+    max-height: 275px;
+    overflow-y: auto;
+}
+
+.members-list-group-container {
+    max-height: 275px;
+    overflow-y: auto;
+}

@@ -36,3 +36,14 @@ type Author = {
   email: string;
   picture: string;
 };
+
+export interface IRoomRoles {
+  name: string;
+  roles: string[];
+  description: string;
+}
+
+export interface IRoomDescription {
+  name: string;
+  description: string;
+}

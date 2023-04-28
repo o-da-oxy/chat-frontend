@@ -1,6 +1,11 @@
 import { io, Socket } from 'socket.io-client';
-import React, { createContext, useContext } from 'react';
-import { IMessage, IUser } from '../models/models';
+import React, { createContext } from 'react';
+import {
+  IMessage,
+  IRoomDescription,
+  IRoomRoles,
+  IUser,
+} from '../models/models';
 
 const SOCKET_URL = 'http://localhost:3000';
 
@@ -8,10 +13,16 @@ export const socket: Socket = io(SOCKET_URL);
 
 export interface AppContextInterface {
   socket: Socket;
-  rooms: string[];
-  setRooms: React.Dispatch<React.SetStateAction<string[]>>;
+  roomsNames: string[];
+  setRoomsNames: React.Dispatch<React.SetStateAction<string[]>>;
   currentRoom: string;
   setCurrentRoom: React.Dispatch<React.SetStateAction<string>>;
+  currentRole: string;
+  setCurrentRole: React.Dispatch<React.SetStateAction<string>>;
+  roomsRoles: IRoomRoles[] | null;
+  setRoomsRoles: React.Dispatch<React.SetStateAction<IRoomRoles[]>>;
+  roomsDescription: IRoomDescription[] | null;
+  setRoomsDescription: React.Dispatch<React.SetStateAction<IRoomDescription[]>>;
   members: IUser[] | null;
   setMembers: React.Dispatch<React.SetStateAction<IUser[]>>;
   messages: IMessage[] | null;
@@ -26,12 +37,18 @@ export const AppContext = createContext<AppContextInterface>({
   socket,
   currentRoom: '',
   setCurrentRoom: () => {},
+  currentRole: '',
+  setCurrentRole: () => {},
   members: [],
   setMembers: () => {},
   messages: [],
   setMessages: () => {},
-  rooms: [],
-  setRooms: () => {},
+  roomsNames: [],
+  setRoomsNames: () => {},
+  roomsRoles: [],
+  setRoomsRoles: () => {},
+  roomsDescription: [],
+  setRoomsDescription: () => {},
   privateMemberMsg: null,
   setPrivateMemberMsg: () => {},
 });

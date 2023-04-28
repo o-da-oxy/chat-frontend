@@ -64,10 +64,20 @@ function Navigation() {
                 }
                 id="basic-nav-dropdown"
               >
-                <NavDropdown.Item href="#action/3.1">Action1</NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.2">Action2</NavDropdown.Item>
-                <NavDropdown.Item>
-                  <Button variant="danger" onClick={handleLogout}>
+                <NavDropdown.Item
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <Button
+                    variant="danger"
+                    style={{
+                      width: '100%',
+                      margin: '0',
+                    }}
+                    onClick={handleLogout}
+                  >
                     Logout
                   </Button>
                 </NavDropdown.Item>

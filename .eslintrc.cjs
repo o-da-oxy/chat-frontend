@@ -38,5 +38,11 @@ module.exports = {
     'import/no-named-as-default': 0,
     'import/order': 0,
     'react/jsx-no-constructed-context-values': 0,
+    'no-return-assign': 0,
+    'no-restricted-syntax': 0,
+    'no-await-in-loop': 0,
+    'react-hooks/exhaustive-deps': 0,
+    '@typescript-eslint/no-var-requires': 0,
+    'no-nested-ternary': 0,
   },
 };

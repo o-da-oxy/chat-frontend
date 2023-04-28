@@ -7,11 +7,16 @@ import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Chat from './pages/Chat';
 import { AppContext, socket } from './redux/appContext';
-import { IMessage, IUser } from './models/models';
+import { IMessage, IRoomDescription, IRoomRoles, IUser } from './models/models';
 
 function App() {
-  const [rooms, setRooms] = useState<string[]>([]);
+  const [roomsNames, setRoomsNames] = useState<string[]>([]);
+  const [roomsRoles, setRoomsRoles] = useState<IRoomRoles[]>([]);
+  const [roomsDescription, setRoomsDescription] = useState<IRoomDescription[]>(
+    []
+  );
   const [currentRoom, setCurrentRoom] = useState<string>('');
+  const [currentRole, setCurrentRole] = useState<string>('');
   const [members, setMembers] = useState<IUser[]>([]);
   const [messages, setMessages] = useState<IMessage[]>([]);
   const [privateMemberMsg, setPrivateMemberMsg] = useState<
@@ -27,10 +32,16 @@ function App() {
         setMembers,
         messages,
         setMessages,
-        rooms,
-        setRooms,
+        roomsNames,
+        setRoomsNames,
+        roomsRoles,
+        setRoomsRoles,
+        roomsDescription,
+        setRoomsDescription,
         privateMemberMsg,
         setPrivateMemberMsg,
+        currentRole,
+        setCurrentRole,
       }}
     >
       <div className="App">

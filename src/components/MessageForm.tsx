@@ -5,7 +5,8 @@ import { useSelector } from 'react-redux';
 import { AppContext } from '../redux/appContext';
 
 function MessageForm() {
-  const { socket, currentRoom, setMessages, messages } = useContext(AppContext);
+  const { socket, currentRoom, setMessages, messages, currentRole } =
+    useContext(AppContext);
   const user = useSelector((state: any) => state.user);
   const [message, setMessage] = useState('');
 
@@ -90,7 +91,17 @@ function MessageForm() {
                           paddingRight: '10px',
                         }}
                       >
-                        {author.id === user?.id ? 'You' : author.name}
+                        {author.id === user?.id && (
+                          <>You {currentRole !== '' && `- ${currentRole}`}</>
+                        )}
+
+                        {author.id !== user?.id && (
+                          <>
+                            {author.name}
+                            {/* {' '}
+                            {currentRole !== '' && `- ${currentRole}`} */}
+                          </>
+                        )}
                       </p>
                       <p
                         className="message-sender"
