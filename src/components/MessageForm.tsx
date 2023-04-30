@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Button, Col, Form, FormGroup, Row } from 'react-bootstrap';
 import '../styles/MessageForm.css';
 import { useSelector } from 'react-redux';
-import { AppContext } from '../redux/appContext';
+import { AppContext } from '../state/appContext';
 
 function MessageForm() {
   const { socket, currentRoom, setMessages, messages, currentRole } =
@@ -12,7 +12,7 @@ function MessageForm() {
 
   const messageEndRef = useRef<HTMLDivElement | null>(null);
   function scrollToBottom() {
-    messageEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    messageEndRef.current?.scrollIntoView({ behavior: 'auto' });
   }
   useEffect(() => {
     scrollToBottom();
@@ -56,7 +56,7 @@ function MessageForm() {
         {user &&
           messages!.map(({ date, messagesByDate }, idx) => (
             <div key={idx}>
-              <p className="alert alert-secondary text-center message-date-indicator">
+              <p style={{ textAlign: 'center', color: '#818c99', margin: '0' }}>
                 {date}
               </p>
               {messagesByDate?.map(({ content, time, author }, msgIdx) => (
@@ -92,14 +92,18 @@ function MessageForm() {
                         }}
                       >
                         {author.id === user?.id && (
-                          <>You {currentRole !== '' && `- ${currentRole}`}</>
+                          <>
+                            You{' '}
+                            {author.currentRole !== '' &&
+                              `- ${author.currentRole}`}
+                          </>
                         )}
 
                         {author.id !== user?.id && (
                           <>
-                            {author.name}
-                            {/* {' '}
-                            {currentRole !== '' && `- ${currentRole}`} */}
+                            {author.name}{' '}
+                            {author.currentRole !== '' &&
+                              `- ${author.currentRole}`}
                           </>
                         )}
                       </p>

@@ -6,7 +6,7 @@ import Home from './pages/Home';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Chat from './pages/Chat';
-import { AppContext, socket } from './redux/appContext';
+import { AppContext, socket } from './state/appContext';
 import { IMessage, IRoomDescription, IRoomRoles, IUser } from './models/models';
 
 function App() {

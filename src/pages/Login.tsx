@@ -1,8 +1,8 @@
 import React, { useContext, useState } from 'react';
 import { Button, Container, Form, Spinner } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
-import { useLoginUserMutation } from '../redux/appApi';
-import { AppContext } from '../redux/appContext';
+import { useLoginUserMutation } from '../state/appApi';
+import { AppContext } from '../state/appContext';
 
 function Login() {
   const [email, setEmail] = useState('');

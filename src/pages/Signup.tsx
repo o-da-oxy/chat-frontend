@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Container, Form } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
-import { useSignupUserMutation } from '../redux/appApi';
+import { useSignupUserMutation } from '../state/appApi';
 import defaultAvatar from '../assets/flower_avatar.png';
 import '../styles/Signup.css';
 
@@ -15,7 +15,7 @@ function Signup() {
   const [uploadingImg, setUploadingImg] = useState(false);
   const [imagePreview, setImagePreview] = useState(null); // картинка при регистрации
   // rtk query
-  const [signupUser, { isLoading, error }] = useSignupUserMutation();
+  const [signupUser] = useSignupUserMutation();
   // navigation after signing up
   const navigate = useNavigate();
 

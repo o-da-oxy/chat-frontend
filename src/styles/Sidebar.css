@@ -1,6 +1,6 @@
 .member-status-img {
-    width: 30px;
-    height: 30px;
+    width: 25px;
+    height: 25px;
     border-radius: 50%;
     object-fit: cover;
 }
@@ -28,11 +28,11 @@
 }
 
 .rooms-list-group-container {
-    max-height: 275px;
+    max-height: 285px;
     overflow-y: auto;
 }
 
 .members-list-group-container {
-    max-height: 275px;
+    max-height: 176px;
     overflow-y: auto;
 }

@@ -44,5 +44,6 @@ module.exports = {
     'react-hooks/exhaustive-deps': 0,
     '@typescript-eslint/no-var-requires': 0,
     'no-nested-ternary': 0,
+    'react/no-unused-prop-types': 0,
   },
 };

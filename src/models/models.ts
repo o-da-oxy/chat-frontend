@@ -6,6 +6,7 @@ export interface IUser {
   picture: string;
   status?: string;
   newMessages?: object[];
+  currentRole?: string;
 }
 
 export interface IUserLoginForm {
@@ -35,12 +36,12 @@ type Author = {
   name: string;
   email: string;
   picture: string;
+  currentRole: string;
 };
 
 export interface IRoomRoles {
   name: string;
   roles: string[];
-  description: string;
 }
 
 export interface IRoomDescription {

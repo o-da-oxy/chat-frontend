@@ -3,7 +3,7 @@ import { Button, Container, Nav, Navbar, NavDropdown } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import logo from '../assets/chat_icon.png';
 import { useSelector } from 'react-redux';
-import { useLogoutUserMutation } from '../redux/appApi';
+import { useLogoutUserMutation } from '../state/appApi';
 
 function Navigation() {
   const user = useSelector((state: any) => state.user);

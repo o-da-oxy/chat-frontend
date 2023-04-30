@@ -1,12 +1,34 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Col, ListGroup, Row, Modal, Button, Form } from 'react-bootstrap';
-import { AppContext } from '../redux/appContext';
+import { AppContext } from '../state/appContext';
 import { useSelector } from 'react-redux';
 import '../styles/Sidebar.css';
 import { FaQuestion, FaUserCircle } from 'react-icons/fa';
-import { IRoomDescription, IRoomRoles } from '../models/models';
+import { IRoomDescription, IRoomRoles, IUser } from '../models/models';
 
-function Sidebar() {
+interface SidebarProps {
+  showDescriptionModal: boolean;
+  showRoleModal: boolean;
+  modalTitle: string;
+  selectedRole: string;
+  handleDescriptionModalClose: () => void;
+  handleDescriptionButtonClick: (roomName: string) => void;
+  handleRoleModalClose: () => void;
+  handleRoleButtonClick: () => void;
+  handleRoleSelectChange: any;
+}
+
+function Sidebar({
+  showDescriptionModal,
+  showRoleModal,
+  modalTitle,
+  selectedRole,
+  handleDescriptionModalClose,
+  handleDescriptionButtonClick,
+  handleRoleModalClose,
+  handleRoleButtonClick,
+  handleRoleSelectChange,
+}: SidebarProps) {
   const user = useSelector((state: any) => state.user);
 
   const {
@@ -21,8 +43,6 @@ function Sidebar() {
     setRoomsRoles,
     roomsDescription,
     setRoomsDescription,
-    currentRole,
-    setCurrentRole,
     privateMemberMsg,
     setPrivateMemberMsg,
   } = useContext(AppContext);
@@ -87,38 +107,9 @@ function Sidebar() {
     joinRoom(roomId, false);
   }
 
-  // modal
-
-  const [showQuestionModal, setShowQuestionModal] = useState(false);
-  const [showRoleModal, setShowRoleModal] = useState(false);
-  const [modalTitle, setModalTitle] = useState('');
-  const [selectedRole, setSelectedRole] = useState('');
-
-  const handleQuestionModalClose = () => {
-    setShowQuestionModal(false);
-  };
-
-  const handleRoleModalClose = () => {
-    setShowRoleModal(false);
-    setCurrentRole(selectedRole);
-  };
-
-  const handleListItemClick = (roomName: string) => {
-    setModalTitle(roomName);
-    setShowQuestionModal(true);
-  };
-
-  const handleRoleButtonClick = () => {
-    setShowRoleModal(true);
-  };
-
-  const handleRoleSelectChange = (event: any) => {
-    setSelectedRole(event.target.value);
-  };
-
   return (
     <>
-      <h3>Available rooms</h3>
+      <h4 style={{ margin: '2px' }}>Available rooms</h4>
       {roomsNames && roomsNames.length > 0 && (
         <ListGroup className="rooms-list-group-container">
           {roomsNames.map((roomName: string, index: number) => (
@@ -156,14 +147,13 @@ function Sidebar() {
                     justifyContent: 'center',
                     alignItems: 'center',
                   }}
-                  onClick={() => handleListItemClick(roomName)}
+                  onClick={() => handleDescriptionButtonClick(roomName)}
                   onKeyDown={(e) => {
                     if (e.key === 'Enter') {
-                      handleListItemClick(roomName);
+                      handleDescriptionButtonClick(roomName);
                     }
                   }}
                   role="button"
-                  tabIndex={0}
                 >
                   <FaQuestion style={{ display: 'inline-block' }} />
                 </Button>
@@ -186,7 +176,6 @@ function Sidebar() {
                     }
                   }}
                   role="button"
-                  tabIndex={0}
                 >
                   <FaUserCircle style={{ display: 'inline-block' }} />
                 </Button>
@@ -196,7 +185,7 @@ function Sidebar() {
         </ListGroup>
       )}
 
-      <Modal show={showQuestionModal} onHide={handleQuestionModalClose}>
+      <Modal show={showDescriptionModal} onHide={handleDescriptionModalClose}>
         <Modal.Header closeButton>
           <Modal.Title>{modalTitle}</Modal.Title>
         </Modal.Header>
@@ -219,7 +208,7 @@ function Sidebar() {
           )}
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleQuestionModalClose}>
+          <Button variant="secondary" onClick={handleDescriptionModalClose}>
             Close
           </Button>
         </Modal.Footer>
@@ -231,13 +220,29 @@ function Sidebar() {
             <Modal.Title>Select your role</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <Form>
+            <Form
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleRoleModalClose();
+              }}
+            >
               <Form.Group controlId="formRoleSelect">
                 <Form.Label>Role:</Form.Label>
                 <Form.Control
                   as="select"
                   value={selectedRole}
                   onChange={handleRoleSelectChange}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      e.preventDefault();
+                      const saveButton = document.getElementById(
+                        'roleModalSaveButton'
+                      );
+                      if (saveButton) {
+                        saveButton.click();
+                      }
+                    }
+                  }}
                 >
                   {roomsRoles!.map((roomRoles: IRoomRoles, index: number) => {
                     if (roomRoles.name === currentRoom) {
@@ -256,17 +261,21 @@ function Sidebar() {
                   })}
                 </Form.Control>
               </Form.Group>
+              <Modal.Footer>
+                <Button
+                  variant="primary"
+                  type="submit"
+                  id="roleModalSaveButton"
+                >
+                  Save
+                </Button>
+              </Modal.Footer>
             </Form>
           </Modal.Body>
-          <Modal.Footer>
-            <Button variant="primary" onClick={handleRoleModalClose}>
-              Save
-            </Button>
-          </Modal.Footer>
         </Modal>
       )}
 
-      <h3>Members</h3>
+      <h4 style={{ margin: '2px' }}>Members</h4>
       <ListGroup className="members-list-group-container">
         {members!
           .sort((a, b) => (a.id === user.id ? -1 : b.id === user.id ? 1 : 0))
