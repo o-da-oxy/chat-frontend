@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
 import Sidebar from '../components/Sidebar';
 import MessageForm from '../components/MessageForm';
@@ -10,6 +10,7 @@ function Chat() {
     showRoleModal,
     modalTitle,
     selectedRole,
+    setSelectedRole,
     handleDescriptionModalClose,
     handleDescriptionButtonClick,
     handleRoleModalClose,
@@ -26,6 +27,7 @@ function Chat() {
             showRoleModal={showRoleModal}
             modalTitle={modalTitle}
             selectedRole={selectedRole}
+            setSelectedRole={setSelectedRole}
             handleDescriptionModalClose={handleDescriptionModalClose}
             handleDescriptionButtonClick={handleDescriptionButtonClick}
             handleRoleModalClose={handleRoleModalClose}

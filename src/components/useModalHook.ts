@@ -23,13 +23,13 @@ export default function useModalHook() {
     setShowDescriptionModal(true);
   };
 
-  // role
+  // roles
 
   const handleRoleModalClose = () => {
     setShowRoleModal(false);
     setCurrentRole(selectedRole);
     const userId = user.id;
-    socket.emit('update-role', { userId, currentRoom, selectedRole }); // передать на бэк;
+    socket.emit('update-role', { userId, currentRoom, selectedRole });
   };
 
   const handleRoleButtonClick = () => {
@@ -45,6 +45,7 @@ export default function useModalHook() {
     showRoleModal,
     modalTitle,
     selectedRole,
+    setSelectedRole,
     handleDescriptionModalClose,
     handleDescriptionButtonClick,
     handleRoleModalClose,

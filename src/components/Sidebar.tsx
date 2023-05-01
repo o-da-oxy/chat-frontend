@@ -11,6 +11,7 @@ interface SidebarProps {
   showRoleModal: boolean;
   modalTitle: string;
   selectedRole: string;
+  setSelectedRole: (selectedRole: string) => void;
   handleDescriptionModalClose: () => void;
   handleDescriptionButtonClick: (roomName: string) => void;
   handleRoleModalClose: () => void;
@@ -23,6 +24,7 @@ function Sidebar({
   showRoleModal,
   modalTitle,
   selectedRole,
+  setSelectedRole,
   handleDescriptionModalClose,
   handleDescriptionButtonClick,
   handleRoleModalClose,
@@ -73,6 +75,13 @@ function Sidebar({
         .then((data) => setRoomsDescription(data));
     }
   }, []);
+
+  // set role "" by default
+  useEffect(() => {
+    if (showRoleModal) {
+      setSelectedRole('');
+    }
+  }, [showRoleModal]);
 
   socket.off('new-user').on('new-user', (payload: any) => {
     setMembers(payload);
@@ -198,9 +207,12 @@ function Sidebar({
                 return (
                   <div className="room-description" key={index}>
                     {roomDescription.description
-                      .split('\n\n')
+                      .split('\n')
                       .map((paragraph: string, pIndex: number) => (
-                        <p key={`${index}-${pIndex}`}>{paragraph}</p>
+                        <React.Fragment key={`${index}-${pIndex}`}>
+                          {paragraph}
+                          <br />
+                        </React.Fragment>
                       ))}
                   </div>
                 );
@@ -246,16 +258,11 @@ function Sidebar({
                     }
                   }}
                 >
-                  {roomsRoles!.map((roomRoles: IRoomRoles, index: number) => {
+                  {roomsRoles.map((roomRoles: IRoomRoles, index: number) => {
                     if (roomRoles.name === currentRoom) {
                       return roomRoles.roles.map(
                         (role: string, roleIndex: number) => (
-                          <option
-                            key={`${index}-${roleIndex}`}
-                            defaultValue={role === '' ? '' : undefined}
-                          >
-                            {role}
-                          </option>
+                          <option key={`${index}-${roleIndex}`}>{role}</option>
                         )
                       );
                     }
