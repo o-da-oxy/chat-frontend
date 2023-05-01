@@ -1,10 +1,10 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Col, ListGroup, Row, Modal, Button, Form } from 'react-bootstrap';
 import { AppContext } from '../state/appContext';
 import { useSelector } from 'react-redux';
 import '../styles/Sidebar.css';
 import { FaQuestion, FaUserCircle } from 'react-icons/fa';
-import { IRoomDescription, IRoomRoles, IUser } from '../models/models';
+import { IRoomDescription, IRoomRoles } from '../models/models';
 
 interface SidebarProps {
   showDescriptionModal: boolean;
@@ -86,7 +86,9 @@ function Sidebar({
       // check undefined
       return;
     }
-    socket.emit('join-room', room, currentRoom);
+    if (room !== currentRoom) {
+      socket.emit('join-room', room, currentRoom);
+    }
     setCurrentRoom(room);
 
     if (isPublic) {

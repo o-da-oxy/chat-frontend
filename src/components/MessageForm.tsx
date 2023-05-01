@@ -5,8 +5,7 @@ import { useSelector } from 'react-redux';
 import { AppContext } from '../state/appContext';
 
 function MessageForm() {
-  const { socket, currentRoom, setMessages, messages, currentRole } =
-    useContext(AppContext);
+  const { socket, currentRoom, setMessages, messages } = useContext(AppContext);
   const user = useSelector((state: any) => state.user);
   const [message, setMessage] = useState('');
 

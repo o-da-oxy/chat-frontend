@@ -12,7 +12,6 @@ function Navigation() {
   async function handleLogout(event: React.FormEvent<HTMLButtonElement>) {
     event.preventDefault();
     await logoutUser(user);
-    // redirect to home page
     window.location.replace('/');
   }
 
