@@ -3,18 +3,14 @@ import { IUser, IUserLoginForm } from '../models/models';
 
 // to make queries to our DB
 const appApi = createApi({
-  // key in the reducer of the store
   reducerPath: 'appApi',
   baseQuery: fetchBaseQuery({
     baseUrl: 'http://localhost:3000/',
   }),
   endpoints: (build) => ({
-    // build.query<*response*, *request*>
-
     getAllUsers: build.query<IUser, void>({
       query: () => ({ url: `users/all` }),
     }),
-
     getUserById: build.query<IUser, string>({
       query: (id: string) => ({
         url: `users/${id}`,
@@ -23,7 +19,6 @@ const appApi = createApi({
         },
       }),
     }),
-
     signupUser: build.mutation({
       query: (user: IUser) => ({
         url: '/users/signup',
@@ -31,7 +26,6 @@ const appApi = createApi({
         body: user,
       }),
     }),
-
     loginUser: build.mutation({
       query: (user: IUserLoginForm) => ({
         url: '/users/login',
@@ -39,7 +33,6 @@ const appApi = createApi({
         body: user,
       }),
     }),
-
     logoutUser: build.mutation({
       query: (user: IUser) => ({
         url: '/users/logout',
@@ -51,8 +44,6 @@ const appApi = createApi({
 });
 
 export const {
-  useGetAllUsersQuery,
-  useGetUserByIdQuery,
   useSignupUserMutation,
   useLoginUserMutation,
   useLogoutUserMutation,

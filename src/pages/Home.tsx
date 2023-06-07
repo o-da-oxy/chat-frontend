@@ -6,7 +6,6 @@ import { useSelector } from 'react-redux';
 
 function Home() {
   const user = useSelector((state: any) => state.user);
-
   return (
     <Row>
       <Col
@@ -30,6 +29,12 @@ function Home() {
               </Button>
             </LinkContainer>
           )}
+          <p style={{ fontSize: '14px', marginTop: '15px', color: 'gray' }}>
+            Suggest a topic for а new room: demskaya01@gmail.com
+          </p>
+          <p style={{ fontSize: '14px', marginTop: '-15px', color: 'gray' }}>
+            Thank you!
+          </p>
         </div>
       </Col>
       <Col md={6} className="home_bg" />
