@@ -14,17 +14,17 @@ function Home() {
       >
         <div className="welcome_page">
           <h1>Chat App</h1>
-          <p>Make friends and improve your English!</p>
+          <p className="description">Make friends and improve your English!</p>
           {user && (
             <LinkContainer to="/chat">
-              <Button>
+              <Button className="get-started-button">
                 Get Started! <i className="" />
               </Button>
             </LinkContainer>
           )}
           {!user && (
             <LinkContainer to="/login">
-              <Button>
+              <Button className="get-started-button">
                 Get Started! <i className="" />
               </Button>
             </LinkContainer>
